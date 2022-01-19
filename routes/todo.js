@@ -4,9 +4,10 @@ const {
 const Todo = require('../models/todo');
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-
+        const todos = await Todo.findAll();
+        res.status(200).json(todos);
     } catch (e) {
         console.log(e);
         res.status(500).json({
@@ -17,7 +18,6 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        //console.log(req.body);
         const todo = await Todo.create({
             title: req.body.title,
             done: false,
