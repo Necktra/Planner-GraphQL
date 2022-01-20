@@ -33,7 +33,12 @@ module.exports = buildSchema(`
         email: String!
     }
 
+    input TodoInput {
+        title: String!
+    }
+
     type Mutation {
         addTestUser(user: UserInput!): User!
+        createTodo(todo: TodoInput!): Todo!
     }
 `);
