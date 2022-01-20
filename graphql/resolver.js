@@ -1,8 +1,15 @@
 const Todo = require('../models/todo')
 
-const users = [
-    {name: 'Igor', age: 30, email: 'igor@mail.ru'},
-    {name: 'Elena', age: 23, email: 'elena@mail.ru'}
+const users = [{
+        name: 'Igor',
+        age: 30,
+        email: 'igor@mail.ru'
+    },
+    {
+        name: 'Elena',
+        age: 23,
+        email: 'elena@mail.ru'
+    }
 ]
 
 module.exports = {
@@ -12,7 +19,11 @@ module.exports = {
             users
         };
     },
-    random({min, max, count}) {
+    random({
+        min,
+        max,
+        count
+    }) {
         const arr = [];
         for (let i = 0; i < count; i++) {
             const random = Math.random() * (max - min) + min;
@@ -20,9 +31,15 @@ module.exports = {
         }
         return arr;
     },
-    addTestUser({user: {name, email}}) {
+    addTestUser({
+        user: {
+            name,
+            email
+        }
+    }) {
         const user = {
-            name, email,
+            name,
+            email,
             age: Math.ceil(Math.random() * 30)
         }
         users.push(user);
@@ -35,15 +52,28 @@ module.exports = {
             throw new Error('Fetch todos is not available');
         }
     },
-    async createTodo({todo}) {
+    async createTodo({
+        todo
+    }) {
         try {
-          return await Todo.create({
+            return await Todo.create({
                 title: todo.title,
                 done: false,
             });
         } catch (e) {
             throw new Error('Title is required');
         }
-    }
-
+    },
+    async completeTodo({
+        id
+    }) {
+        try {
+            const todo = await Todo.findByPk(id);
+            todo.done = true;
+            await todo.save();
+            return todo;
+        } catch (e) {
+            throw new Error('Id is required');
+        }
+    },
 };
